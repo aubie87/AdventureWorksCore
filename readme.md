@@ -52,12 +52,12 @@ Where the `user` is your github userid and the `repo` is the name of your new re
    4. Enter a name and location of the new project at the bottom of the dialog. For example "BaseName.Web".
 2. Select the project template for this type of application.
    1. At the top choose **.NET Core** and **ASP.NET Core 2.0**
-   2. Select the **Web Application (Model-View-Controller)** template. This will create a project that supports MVC Controllers for both RESTful Web APIs and
-    Razor Views out of the box.
-   3. Authentication should be **No Authentication**.
-   4. **Enable Docker Support** should be unchecked.
+   2. Select the **Empty** template. This will create a blank project that we will add to.
+   3. **Enable Docker Support** should be unchecked.
 
-### Add Data Project - .NET Standard 2.0
+Run Build/Build Solution to verify the project builds cleanly.
+
+### Add Data Project - .NET Standard 2.0 (under review)
 
 1. Right click the solution node and select **Add/New Project...** inside the solution
 1. **Visual C#/.NET Core** on the left filter menu.

@@ -59,6 +59,8 @@ Run Build/Build Solution to verify the project builds cleanly.
 
 Running the initial project has some options to note. It can be run via IIS Express or via various browsers. If you choose to debug via a browser then it can be beneficial to use a browser that you do not use day to day. This eliminates cookies, bookmarks and other extraneous data your normal browser would bring with it.
 
+See [AdWorksCore.Web Readme](AdWorksCore.Web/readme.md) for more information.
+
 ### Add Data Project - .NET Standard 2.0 (under review)
 
 1. Right click the solution node and select **Add/New Project...** inside the solution

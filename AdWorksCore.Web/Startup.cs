@@ -25,10 +25,9 @@ namespace AdWorksCore.Web
                 app.UseDeveloperExceptionPage();
             }
 
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("Hello World!");
-            });
+            // order matters here
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
         }
     }
 }

@@ -1,0 +1,41 @@
+﻿
+// via id
+div#theForm {
+    background-color: lightgrey;
+}
+
+// via id
+#theForm input[type=submit] {
+    background-color: green;
+}
+
+// via class
+ul.product-properties {
+    font-size: small;
+}
+
+// matches child li of ul.product-properties
+ul.product-properties li {
+    list-style-type: none;
+}
+
+.product-info {
+    border: 1px solid grey;
+    display: inline-block;
+}
+
+h2 {
+    color: orange;
+}
+
+menu li {
+    display: inline;
+}
+
+menu li::after {
+    content: ' |';
+}
+
+menu li:last-of-type::after {
+    content: '';
+}

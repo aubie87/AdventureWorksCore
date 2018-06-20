@@ -1,27 +1,51 @@
-﻿
-// via id
-div#theForm {
-    background-color: lightgrey;
+﻿body {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: larger;
 }
 
-// via id
-#theForm input[type=submit] {
-    background-color: green;
+footer {
+    background-color: orange;
 }
+
+input, textarea {
+    font-size: 18px;
+    width: 200px;
+}
+
+input[type=submit] {
+    width: auto;
+}
+
+label {
+    font-size: 16px;
+}
+
+#theForm {
+    background-color: lightgray;
+}
+
 
 // via class
-ul.product-properties {
+ul.person-properties {
     font-size: small;
 }
 
-// matches child li of ul.product-properties
-ul.product-properties li {
-    list-style-type: none;
+div.person-info {
+    border: 2px solid gray;
+    display: inline-block;
+    padding: 2px 8px;
+    margin: 4px;
 }
 
-.product-info {
-    border: 1px solid grey;
-    display: inline-block;
+div.person-info h3 {
+    color: red;
+    float: left;
+    margin: 5px;
+}
+
+ul.person-properties li {
+    color: blueviolet;
+    list-style-type: none;
 }
 
 h2 {

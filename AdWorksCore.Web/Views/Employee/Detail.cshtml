@@ -1,0 +1,38 @@
+﻿@model AdWorksCore.Web.Views.Employee.EmployeeViewModel
+
+@{
+    ViewData["Title"] = "Person Details";
+}
+<hr />
+<div class="row">
+    <div class="col-md-4 col-md-offset-2">
+        <div class="well">
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="MiddleName" class="control-label"></label>
+                <input asp-for="MiddleName" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="Suffix" class="control-label"></label>
+                <input asp-for="Suffix" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+            </div>
+            <div>
+                <a asp-action="Index">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>

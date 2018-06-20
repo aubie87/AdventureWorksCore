@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Diagnostics;
 
 namespace AdWorksCore.Web
@@ -9,6 +12,7 @@ namespace AdWorksCore.Web
     public class Startup
     {
         public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             // initialized in Program.cs
@@ -26,10 +30,13 @@ namespace AdWorksCore.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddDebug();
             if (env.IsDevelopment())
             {
+                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseStatusCodePages();
             }
@@ -43,14 +50,14 @@ namespace AdWorksCore.Web
             app.UseStaticFiles();
 
             // app.UseMvcWithDefaultRoute();
-            app.UseMvc(config =>
-            {
-                config.MapRoute("Default",
-                    "{controller}/{action}/{id?}",
-                    new { controller = "Home", Action = "Index" });
-            });
+            app.UseMvc(ConfigureRoutes);
+        }
 
-            
+        private void ConfigureRoutes(IRouteBuilder routeBuilder)
+        {
+            routeBuilder.MapRoute("Default",
+                "{controller}/{action}/{id?}",
+                new { controller = "Home", Action = "Index" });
         }
     }
 }

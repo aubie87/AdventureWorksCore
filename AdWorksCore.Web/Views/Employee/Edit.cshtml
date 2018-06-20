@@ -1,0 +1,51 @@
+﻿@model AdWorksCore.Web.Views.Employee.EmployeeViewModel
+
+@{
+    ViewData["Title"] = "Person Edit";
+}
+<hr />
+<div class="row">
+    <div class="col-md-4 col-md-offset-2">
+        <div class="well">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FirstName" class="control-label"></label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MiddleName" class="control-label"></label>
+                    <input asp-for="MiddleName" class="form-control" />
+                    <span asp-validation-for="MiddleName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastName" class="control-label"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Suffix" class="control-label"></label>
+                    <input asp-for="Suffix" class="form-control" />
+                    <span asp-validation-for="Suffix" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+                <div>
+                    <a asp-action="Index">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section validationScripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js"></script>
+}

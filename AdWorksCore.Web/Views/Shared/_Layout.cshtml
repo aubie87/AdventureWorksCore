@@ -1,6 +1,7 @@
 ﻿<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>AD - @ViewBag.Title</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
 </head>
 <body>
@@ -17,5 +18,9 @@
         @RenderBody()
     </section>
     <footer>Copyleft 2018 Adventure Works! Limited</footer>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    @RenderSection("validationScripts", false)
+    <script src="~/js/site.js"></script>
 </body>
 </html>

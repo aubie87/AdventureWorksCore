@@ -1,14 +1,14 @@
-## ASP.NET Core 2 Tutorial Capturing Various Tools and Techniques
+## ASP.NET Core 2 Tutorial and Playground
 
 ### Summary
 The initial goal is to build an ASP.NET Core project that accesses the AdventureWorks database. Within the solution there will be multiple sub-projects separating the front-end technologies from back-end support requirements including data access and business logic. Domain Driven Design (DDD) will also drive separation of business needs and usage.
 
 Ideally we will be able to demonstrate multiple techniques for performing the same task so we can compare and contrast differing solutions. For example we would like to see how Razor and Angular would implement the same UI using the same backend data and classes. Additionally, we would also like to explore basic web API design compared to an OData 4 API.
 
-Unit testing and TDD will be implemented intentionally with older versions of some libraries and frameworks so that upgrades can be easily verified and repaired as needed. With unit testing in place, any refactoring should quickly catch breaking changes. Properly implemented and tested classes and modules should also help enforce the 'S' and 'O' in SOLID design.
+Unit testing and Test Driven Development (TDD) will be a key aspect of development. At times technologies will be explored with minimal testing but will be added once the technology is better udnerstood. Properly implemented and tested classes and modules will help enforce the 'S' and 'O' in SOLID design.
 
 ### Prerequisites
-We expect the initial completed solution to require the following tools, technologies and libraries. This list will expand and functionality is added to the solution.
+We expect the initial completed solution to require the following tools, technologies and libraries. This list will expand as functionality is added to the solution.
 
 * Backend Tools and Libraries
     * [Visual Studio 2017](https://www.visualstudio.com/vs/)

@@ -2,22 +2,37 @@
 <head>
     <title>AD - @ViewBag.Title</title>
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
 </head>
 <body>
-    <header>Welcome to Adventure Works!</header>
-    <menu>
-        <ul>
-            <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-            <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
-            <li><a asp-controller="Home" asp-action="About">About</a></li>
-        </ul>
-    </menu>
+    <div class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <div class="navbar-brand"><i class="fa fa-futbol-o"></i>Adventure Works Playground</div>
+                <button class="navbar-toggle" data-toggle="collapse" data-target="#menu">&#9776;</button>
+            </div>
+            <div id="menu" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li><a asp-controller="Employee" asp-action="Index">Employees</a></li>
+                    <li><a asp-controller="Home" asp-action="About">About</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
     <section>
-        <h2>@ViewBag.Title</h2>
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                <h2>@ViewBag.Title</h2>
+            </div>
+        </div>
         @RenderBody()
     </section>
-    <footer>Copyleft 2018 Adventure Works! Limited</footer>
+    <footer class="container">
+        <div>Copyleft 2018 Adventure Works Playground! Limited</div>
+    </footer>
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     @RenderSection("validationScripts", false)

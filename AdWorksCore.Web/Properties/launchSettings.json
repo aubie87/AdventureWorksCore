@@ -1,4 +1,7 @@
 {
+  "environmentVariables": {
+    "ASPNETCORE_preventHostingStartup": "True"
+  },
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,

@@ -14,7 +14,9 @@ namespace AdWorksCore.Web.Views.Employee
         private static List<Person> employeeList = new List<Person>() {
             new Person() {Id=101, FirstName="Abe", LastName="Grande", LastModified = DateTime.Now.AddDays(-1), PersonType="EM" },
             new Person() {Id=102, FirstName="Betty", LastName="Grande", LastModified = DateTime.Now.AddDays(-2), PersonType="EM" },
-            new Person() {Id=103, FirstName="Candace", LastName="Grande", LastModified = DateTime.Now.AddDays(-3), PersonType="EM" }
+            new Person() {Id=103, FirstName="Candace", LastName="Grande", LastModified = DateTime.Now.AddDays(-3), PersonType="EM" },
+            new Person() {Id=104, FirstName="Dave", LastName="Draper", LastModified = DateTime.Now.AddDays(-4), PersonType="EM" },
+            new Person() {Id=105, FirstName="Eunice", LastName="Evers", LastModified = DateTime.Now.AddDays(-4), PersonType="EM" }
         };
 
         private readonly ILogger<EmployeeController> logger;

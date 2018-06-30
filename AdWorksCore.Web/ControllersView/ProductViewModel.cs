@@ -21,7 +21,7 @@ namespace AdWorksCore.Web.ControllersView
         {
             return new Product()
             {
-                Id = this.Id,
+                Id = this.ProductId,
                 Color = this.Color,
                 ListPrice = this.ListPrice,
                 Name = this.Name,

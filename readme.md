@@ -1,4 +1,5 @@
-## ASP.NET Core 2 Tutorial and Playground
+# Adventure Works Playground
+## ASP.NET Core 2 Tutorial
 
 ### Summary
 The initial goal is to build an ASP.NET Core project that accesses the AdventureWorks database. Within the solution there will be multiple sub-projects separating the front-end technologies from back-end support requirements including data access and business logic. Domain Driven Design (DDD) will also drive separation of business needs and usage.

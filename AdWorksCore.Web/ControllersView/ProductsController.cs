@@ -63,13 +63,13 @@ namespace AdWorksCore.Web.ControllersView
             {
                 try
                 {
-                    if(vm.Id > 0)
+                    if(vm.ProductId > 0)
                     {
                         throw new NotSupportedException("product id set to non-zero value");
                     }
-                    vm.Id = productList.Max(p => p.Id) + 1;
+                    vm.ProductId = productList.Max(p => p.Id) + 1;
                     productList.Add(vm.ToProduct());
-                    return Created($"/api/products/{vm.Id}", vm);
+                    return Created($"/api/products/{vm.ProductId}", vm);
                 }
                 catch(Exception e)
                 {

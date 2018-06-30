@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AdWorksCore.Web.ControllersView
 {
+    // api route names should always be plural nouns
     [Produces("application/json")]
     [Route("api/[controller]")]
     public class ProductsController : Controller
@@ -56,19 +57,19 @@ namespace AdWorksCore.Web.ControllersView
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]Product product)
+        public IActionResult Post([FromBody]ProductViewModel vm)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if(product.Id > 0)
+                    if(vm.Id > 0)
                     {
                         throw new NotSupportedException("product id set to non-zero value");
                     }
-                    product.Id = productList.Max(p => p.Id) + 1;
-                    productList.Add(product);
-                    return Created($"/api/products/{product.Id}", product);
+                    vm.Id = productList.Max(p => p.Id) + 1;
+                    productList.Add(vm.ToProduct());
+                    return Created($"/api/products/{vm.Id}", vm);
                 }
                 catch(Exception e)
                 {

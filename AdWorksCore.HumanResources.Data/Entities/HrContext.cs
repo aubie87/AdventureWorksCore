@@ -26,12 +26,16 @@ namespace AdWorksCore.HumanResources.Data.Entities
         public virtual DbSet<Shift> Shift { get; set; }
         public virtual DbSet<StateProvince> StateProvince { get; set; }
 
+        public HrContext(DbContextOptions<HrContext> options) : base(options)
+        {
+            // passing options down to context
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014");
+                //optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014");
             }
         }
 

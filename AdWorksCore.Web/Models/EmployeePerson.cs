@@ -15,7 +15,7 @@ namespace AdWorksCore.Web.Models
      *  VC = Vendor contact, 
      *  GC = General contact
      */
-    public class Person
+    public class EmployeePerson
     {
         [ReadOnly(true)]
         public int Id { get; set; }

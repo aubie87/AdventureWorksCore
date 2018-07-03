@@ -16,4 +16,8 @@
     <Folder Include="Views\Home\Razor\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AdWorksCore.HumanResources.Data\AdWorksCore.HumanResources.Data.csproj" />
+  </ItemGroup>
+
 </Project>

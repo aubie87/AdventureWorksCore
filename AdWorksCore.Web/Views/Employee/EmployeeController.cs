@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using AdWorksCore.Web.Models;
+using AdWorksCore.HumanResources.Data.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -11,19 +10,21 @@ namespace AdWorksCore.Web.Views.Employee
 {
     public class EmployeeController : Controller
     {
-        private static List<Person> employeeList = new List<Person>() {
-            new Person() {Id=101, FirstName="Abe", LastName="Grande", LastModified = DateTime.Now.AddDays(-1), PersonType="EM" },
-            new Person() {Id=102, FirstName="Betty", LastName="Grande", LastModified = DateTime.Now.AddDays(-2), PersonType="EM" },
-            new Person() {Id=103, FirstName="Candace", LastName="Grande", LastModified = DateTime.Now.AddDays(-3), PersonType="EM" },
-            new Person() {Id=104, FirstName="Dave", LastName="Draper", LastModified = DateTime.Now.AddDays(-4), PersonType="EM" },
-            new Person() {Id=105, FirstName="Eunice", LastName="Evers", LastModified = DateTime.Now.AddDays(-4), PersonType="EM" }
-        };
+        //private static List<Person> employeeList = new List<Person>() {
+        //    new Person() {Id=101, FirstName="Abe", LastName="Grande", LastModified = DateTime.Now.AddDays(-1), PersonType="EM" },
+        //    new Person() {Id=102, FirstName="Betty", LastName="Grande", LastModified = DateTime.Now.AddDays(-2), PersonType="EM" },
+        //    new Person() {Id=103, FirstName="Candace", LastName="Grande", LastModified = DateTime.Now.AddDays(-3), PersonType="EM" },
+        //    new Person() {Id=104, FirstName="Dave", LastName="Draper", LastModified = DateTime.Now.AddDays(-4), PersonType="EM" },
+        //    new Person() {Id=105, FirstName="Eunice", LastName="Evers", LastModified = DateTime.Now.AddDays(-4), PersonType="EM" }
+        //};
 
         private readonly ILogger<EmployeeController> logger;
+        private readonly HrContext context;
 
-        public EmployeeController(ILogger<EmployeeController> logger)
+        public EmployeeController(ILogger<EmployeeController> logger, HrContext context)
         {
             this.logger = logger;
+            this.context = context;
         }
 
         // GET: Employee
@@ -31,14 +32,18 @@ namespace AdWorksCore.Web.Views.Employee
         public IActionResult Index()
         {
             logger.LogDebug("Employee:Index()");
-            return View(employeeList);
+            var employees = context.Person
+                .Where(p => p.PersonType == "EM" && p.ModifiedDate > DateTime.Now.AddYears(-8))
+                .OrderBy(p=>p.LastName).ThenBy(p=>p.FirstName);
+            IList<EmployeeViewModel> vmList = EmployeeViewModel.FromPerson(employees.ToList());
+            return View(vmList);
         }
 
         // GET: Employee/Details/5
         [HttpGet]
         public IActionResult Detail(int id)
         {
-            Person detail = employeeList.FirstOrDefault(e => e.Id == id);
+            Person detail = context.Person.Find(id);
             if(detail == null)
             {
                 // could return NotFound() but not useful to user
@@ -71,14 +76,16 @@ namespace AdWorksCore.Web.Views.Employee
                         LastName = vm.LastName,
                         PersonType = "EM",
                         Suffix = vm.Suffix,
-                        Title = vm.Title,
-                        LastModified = DateTime.UtcNow,
-                        Id = employeeList.Max(e => e.Id) + 1
+                        Title = vm.Title
+                        //LastModified = DateTime.UtcNow,
+                        //Id = employeeList.Max(e => e.Id) + 1
                     };
-                    employeeList.Add(person);
+                    //employeeList.Add(person);
+                    context.Person.Add(person);
+                    context.SaveChanges();
 
                     //return RedirectToAction(nameof(Index));
-                    return RedirectToAction(nameof(Detail), new { id = person.Id });
+                    return RedirectToAction(nameof(Detail), new { id = person.BusinessEntityId });
                 }
                 catch
                 {
@@ -91,7 +98,8 @@ namespace AdWorksCore.Web.Views.Employee
         // GET: Employee/Edit/5
         public ActionResult Edit(int id)
         {
-            Person person = employeeList.FirstOrDefault(e => e.Id == id);
+            //Person person = employeeList.FirstOrDefault(e => e.Id == id);
+            var person = context.Person.Find(id);
             EmployeeViewModel vm = EmployeeViewModel.FromPerson(person);
             return View(vm);
         }
@@ -105,14 +113,10 @@ namespace AdWorksCore.Web.Views.Employee
             {
                 if(ModelState.IsValid && employee.Id == id)
                 {
-                    Person storedEmp = employeeList.FirstOrDefault(e => e.Id == id);
-                    storedEmp.FirstName = employee.FirstName;
-                    storedEmp.LastName = employee.LastName;
-                    storedEmp.MiddleName = employee.MiddleName;
-                    storedEmp.Suffix = employee.Suffix;
-                    storedEmp.Title = employee.Title;
-                    storedEmp.LastModified = DateTime.UtcNow;
-                    return RedirectToAction(nameof(Detail), new { id = employee.Id});
+                    Person storedEmp = context.Person.Find(id);
+                    employee.CopyToPerson(storedEmp);
+                    context.SaveChanges();
+                    return RedirectToAction(nameof(Detail), new { id });
                 }
             }
             catch

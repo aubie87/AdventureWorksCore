@@ -19,28 +19,37 @@ namespace AdWorksCore.Web.Views.Employee
                 LastName = person.LastName,
                 Title = person.Title,
                 Suffix = person.Suffix,
-                LastModified = person.ModifiedDate.ToLocalTime()
+                LastModified = person.ModifiedDate.ToLocalTime(),
+                PersonType = PersonType.Employee
             };
         }
 
         public static IList<EmployeeViewModel> FromPerson(IList<Person> employeeList)
         {
             List<EmployeeViewModel> vmList = new List<EmployeeViewModel>();
-            foreach(var p in employeeList)
+            foreach (var p in employeeList)
             {
                 vmList.Add(EmployeeViewModel.FromPerson(p));
             }
             return vmList;
         }
 
-        public void CopyToPerson(Person storedEmp)
+        public Person CreatePerson()
         {
-            storedEmp.FirstName = FirstName;
-            storedEmp.LastName = LastName;
-            storedEmp.MiddleName = MiddleName;
-            storedEmp.Suffix = Suffix;
-            storedEmp.Title = Title;
-            storedEmp.ModifiedDate = DateTime.UtcNow;
+            return CopyToPerson(new Person());
+        }
+
+        public Person CopyToPerson(Person person)
+        {
+            person.FirstName = FirstName;
+            person.LastName = LastName;
+            person.MiddleName = MiddleName;
+            person.Suffix = Suffix;
+            person.Title = Title;
+            person.ModifiedDate = DateTime.UtcNow;
+            person.BusinessEntityId = Id;
+            person.PersonType = "EM";
+            return person;
         }
 
         [ReadOnly(true)]

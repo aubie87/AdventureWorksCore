@@ -69,26 +69,25 @@ namespace AdWorksCore.Web.Views.Employee
             {
                 try
                 {
-                    Person person = new Person()
+                    // must create and save changes to get a new BusinessEntityId from the DB
+                    BusinessEntity be = new BusinessEntity
                     {
-                        FirstName = vm.FirstName,
-                        MiddleName = vm.MiddleName,
-                        LastName = vm.LastName,
-                        PersonType = "EM",
-                        Suffix = vm.Suffix,
-                        Title = vm.Title
-                        //LastModified = DateTime.UtcNow,
-                        //Id = employeeList.Max(e => e.Id) + 1
+                        ModifiedDate = DateTime.UtcNow
                     };
-                    //employeeList.Add(person);
+                    context.BusinessEntity.Add(be);
+                    context.SaveChanges();
+
+                    vm.Id = be.BusinessEntityId;
+                    Person person = vm.CreatePerson();
                     context.Person.Add(person);
                     context.SaveChanges();
 
                     //return RedirectToAction(nameof(Index));
                     return RedirectToAction(nameof(Detail), new { id = person.BusinessEntityId });
                 }
-                catch
+                catch(Exception e)
                 {
+                    logger.LogError(e, "saving new person/employee");
                 }
             }
             // invalid input

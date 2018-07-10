@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 
 namespace AdWorksCore.HumanResources.Data.Entities
 {
@@ -31,12 +33,22 @@ namespace AdWorksCore.HumanResources.Data.Entities
             // passing options down to context
         }
 
+        public static readonly LoggerFactory LogFactory
+            = new LoggerFactory(new[]
+            {
+                new ConsoleLoggerProvider((category, level)
+                    => category == DbLoggerCategory.Database.Command.Name
+                    && level == LogLevel.Information, true)
+            });
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
                 //optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014");
             }
+            optionsBuilder
+                .UseLoggerFactory(LogFactory);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

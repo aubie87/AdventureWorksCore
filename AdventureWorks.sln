@@ -12,7 +12,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdWorksCore.Web", "AdWorksC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdWorksCore.Web.Test", "AdWorksCore.Web.Test\AdWorksCore.Web.Test.csproj", "{3BD86E21-409D-44B5-9630-88276CE70548}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdWorksCore.HumanResources.Data", "AdWorksCore.HumanResources.Data\AdWorksCore.HumanResources.Data.csproj", "{CE27A610-54CC-4EBD-9E1F-8C2CAA872616}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdWorksCore.HumanResources.Data", "AdWorksCore.HumanResources.Data\AdWorksCore.HumanResources.Data.csproj", "{CE27A610-54CC-4EBD-9E1F-8C2CAA872616}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdworksCore.ConsoleApp", "AdworksCore.ConsoleApp\AdworksCore.ConsoleApp.csproj", "{EDD244E7-D6F5-46E2-A4E0-F7C9A7D05BC5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +34,10 @@ Global
 		{CE27A610-54CC-4EBD-9E1F-8C2CAA872616}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE27A610-54CC-4EBD-9E1F-8C2CAA872616}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE27A610-54CC-4EBD-9E1F-8C2CAA872616}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDD244E7-D6F5-46E2-A4E0-F7C9A7D05BC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDD244E7-D6F5-46E2-A4E0-F7C9A7D05BC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDD244E7-D6F5-46E2-A4E0-F7C9A7D05BC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDD244E7-D6F5-46E2-A4E0-F7C9A7D05BC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

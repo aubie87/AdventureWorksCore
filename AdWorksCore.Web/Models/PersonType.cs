@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace AdWorksCore.Web.Models
 {
+    /// <summary>
+    /// https://www.sqldatadictionary.com/AdventureWorks2014/
+    /// Under Person.Person.PersonType documentation - should probably be in it's own table.
+    /// </summary>
     public enum PersonType
     {
         //SC = Store Contact

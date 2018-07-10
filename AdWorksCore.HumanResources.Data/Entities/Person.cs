@@ -23,7 +23,7 @@ namespace AdWorksCore.HumanResources.Data.Entities
         public int EmailPromotion { get; set; }
         public string AdditionalContactInfo { get; set; }
         public string Demographics { get; set; }
-        public Guid Rowguid { get; set; }
+        //public Guid Rowguid { get; set; }
         public DateTime ModifiedDate { get; set; }
 
         public BusinessEntity BusinessEntity { get; set; }

@@ -8,7 +8,7 @@ namespace AdWorksCore.HumanResources.Data.Entities
         public int BusinessEntityId { get; set; }
         public int PersonId { get; set; }
         public int ContactTypeId { get; set; }
-        public Guid Rowguid { get; set; }
+        //public Guid Rowguid { get; set; }
         public DateTime ModifiedDate { get; set; }
 
         public BusinessEntity BusinessEntity { get; set; }

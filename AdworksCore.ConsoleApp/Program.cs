@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Diagnostics;
+using System.Linq;
 
 namespace AdworksCore.ConsoleApp
 {
@@ -14,9 +15,11 @@ namespace AdworksCore.ConsoleApp
             optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite");
             using (HrContext hrContext = new HrContext(optionsBuilder.Options))
             {
-                Person person = CreatePerson(hrContext, "Jorge", "Jastanza", "EM");
-                //Person person = hrContext.Person.Find(22782);
-                OnboardEmployee(hrContext, person, DateTime.Parse("1996-08-06"), "M", "555443336");
+                //Person person = CreatePerson(hrContext, "Jorge", "Jastanza", "EM");
+                Person person = hrContext.Person.Include(p=>p.Employee).Include(p=>p.PersonPhone).Where(p => p.BusinessEntityId == 1).FirstOrDefault();
+                Employee employee = person.Employee;
+                Console.WriteLine($"{person.FirstName} {person.LastName} {employee.JobTitle}");
+                //OnboardEmployee(hrContext, person, DateTime.Parse("1996-08-06"), "M", "555443336");
             }
 
             Console.WriteLine("Press any key to continue...");

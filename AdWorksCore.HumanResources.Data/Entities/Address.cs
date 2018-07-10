@@ -16,7 +16,7 @@ namespace AdWorksCore.HumanResources.Data.Entities
         public string City { get; set; }
         public int StateProvinceId { get; set; }
         public string PostalCode { get; set; }
-        public Guid Rowguid { get; set; }
+        //public Guid Rowguid { get; set; }
         public DateTime ModifiedDate { get; set; }
 
         public StateProvince StateProvince { get; set; }

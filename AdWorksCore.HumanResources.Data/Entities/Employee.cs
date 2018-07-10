@@ -25,7 +25,7 @@ namespace AdWorksCore.HumanResources.Data.Entities
         public short VacationHours { get; set; }
         public short SickLeaveHours { get; set; }
         public bool? CurrentFlag { get; set; }
-        public Guid Rowguid { get; set; }
+        //public Guid Rowguid { get; set; }
         public DateTime ModifiedDate { get; set; }
 
         public Person BusinessEntity { get; set; }

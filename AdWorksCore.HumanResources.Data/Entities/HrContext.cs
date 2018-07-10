@@ -57,9 +57,9 @@ namespace AdWorksCore.HumanResources.Data.Entities
             {
                 entity.ToTable("Address", "Person");
 
-                entity.HasIndex(e => e.Rowguid)
-                    .HasName("AK_Address_rowguid")
-                    .IsUnique();
+                //entity.HasIndex(e => e.Rowguid)
+                //    .HasName("AK_Address_rowguid")
+                //    .IsUnique();
 
                 entity.HasIndex(e => e.StateProvinceId);
 
@@ -86,9 +86,9 @@ namespace AdWorksCore.HumanResources.Data.Entities
                     .IsRequired()
                     .HasMaxLength(15);
 
-                entity.Property(e => e.Rowguid)
-                    .HasColumnName("rowguid")
-                    .HasDefaultValueSql("(newid())");
+                //entity.Property(e => e.Rowguid)
+                //    .HasColumnName("rowguid")
+                //    .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.StateProvinceId).HasColumnName("StateProvinceID");
 
@@ -106,9 +106,9 @@ namespace AdWorksCore.HumanResources.Data.Entities
                     .HasName("AK_AddressType_Name")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Rowguid)
-                    .HasName("AK_AddressType_rowguid")
-                    .IsUnique();
+                //entity.HasIndex(e => e.Rowguid)
+                //    .HasName("AK_AddressType_rowguid")
+                //    .IsUnique();
 
                 entity.Property(e => e.AddressTypeId).HasColumnName("AddressTypeID");
 
@@ -121,18 +121,18 @@ namespace AdWorksCore.HumanResources.Data.Entities
                     .HasColumnType("Name")
                     .HasMaxLength(4000);
 
-                entity.Property(e => e.Rowguid)
-                    .HasColumnName("rowguid")
-                    .HasDefaultValueSql("(newid())");
+                //entity.Property(e => e.Rowguid)
+                //    .HasColumnName("rowguid")
+                //    .HasDefaultValueSql("(newid())");
             });
 
             modelBuilder.Entity<BusinessEntity>(entity =>
             {
                 entity.ToTable("BusinessEntity", "Person");
 
-                entity.HasIndex(e => e.Rowguid)
-                    .HasName("AK_BusinessEntity_rowguid")
-                    .IsUnique();
+                //entity.HasIndex(e => e.Rowguid)
+                //    .HasName("AK_BusinessEntity_rowguid")
+                //    .IsUnique();
 
                 entity.Property(e => e.BusinessEntityId).HasColumnName("BusinessEntityID");
 
@@ -140,9 +140,9 @@ namespace AdWorksCore.HumanResources.Data.Entities
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Rowguid)
-                    .HasColumnName("rowguid")
-                    .HasDefaultValueSql("(newid())");
+                //entity.Property(e => e.Rowguid)
+                //    .HasColumnName("rowguid")
+                //    .HasDefaultValueSql("(newid())");
             });
 
             modelBuilder.Entity<BusinessEntityAddress>(entity =>
@@ -155,9 +155,9 @@ namespace AdWorksCore.HumanResources.Data.Entities
 
                 entity.HasIndex(e => e.AddressTypeId);
 
-                entity.HasIndex(e => e.Rowguid)
-                    .HasName("AK_BusinessEntityAddress_rowguid")
-                    .IsUnique();
+                //entity.HasIndex(e => e.Rowguid)
+                //    .HasName("AK_BusinessEntityAddress_rowguid")
+                //    .IsUnique();
 
                 entity.Property(e => e.BusinessEntityId).HasColumnName("BusinessEntityID");
 
@@ -169,9 +169,9 @@ namespace AdWorksCore.HumanResources.Data.Entities
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Rowguid)
-                    .HasColumnName("rowguid")
-                    .HasDefaultValueSql("(newid())");
+                //entity.Property(e => e.Rowguid)
+                //    .HasColumnName("rowguid")
+                //    .HasDefaultValueSql("(newid())");
 
                 entity.HasOne(d => d.Address)
                     .WithMany(p => p.BusinessEntityAddress)
@@ -199,9 +199,9 @@ namespace AdWorksCore.HumanResources.Data.Entities
 
                 entity.HasIndex(e => e.PersonId);
 
-                entity.HasIndex(e => e.Rowguid)
-                    .HasName("AK_BusinessEntityContact_rowguid")
-                    .IsUnique();
+                //entity.HasIndex(e => e.Rowguid)
+                //    .HasName("AK_BusinessEntityContact_rowguid")
+                //    .IsUnique();
 
                 entity.Property(e => e.BusinessEntityId).HasColumnName("BusinessEntityID");
 
@@ -213,9 +213,9 @@ namespace AdWorksCore.HumanResources.Data.Entities
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Rowguid)
-                    .HasColumnName("rowguid")
-                    .HasDefaultValueSql("(newid())");
+                //entity.Property(e => e.Rowguid)
+                //    .HasColumnName("rowguid")
+                //    .HasDefaultValueSql("(newid())");
 
                 entity.HasOne(d => d.BusinessEntity)
                     .WithMany(p => p.BusinessEntityContact)
@@ -324,9 +324,9 @@ namespace AdWorksCore.HumanResources.Data.Entities
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.Rowguid)
-                    .HasColumnName("rowguid")
-                    .HasDefaultValueSql("(newid())");
+                //entity.Property(e => e.Rowguid)
+                //    .HasColumnName("rowguid")
+                //    .HasDefaultValueSql("(newid())");
 
                 entity.HasOne(d => d.BusinessEntity)
                     .WithMany(p => p.EmailAddress)
@@ -348,9 +348,9 @@ namespace AdWorksCore.HumanResources.Data.Entities
                     .HasName("AK_Employee_NationalIDNumber")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Rowguid)
-                    .HasName("AK_Employee_rowguid")
-                    .IsUnique();
+                //entity.HasIndex(e => e.Rowguid)
+                //    .HasName("AK_Employee_rowguid")
+                //    .IsUnique();
 
                 entity.Property(e => e.BusinessEntityId)
                     .HasColumnName("BusinessEntityID")
@@ -392,9 +392,9 @@ namespace AdWorksCore.HumanResources.Data.Entities
 
                 entity.Property(e => e.OrganizationLevel).HasComputedColumnSql("([OrganizationNode].[GetLevel]())");
 
-                entity.Property(e => e.Rowguid)
-                    .HasColumnName("rowguid")
-                    .HasDefaultValueSql("(newid())");
+                //entity.Property(e => e.Rowguid)
+                //    .HasColumnName("rowguid")
+                //    .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.SalariedFlag)
                     .HasColumnType("Flag")
@@ -517,9 +517,9 @@ namespace AdWorksCore.HumanResources.Data.Entities
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Rowguid)
-                    .HasColumnName("rowguid")
-                    .HasDefaultValueSql("(newid())");
+                //entity.Property(e => e.Rowguid)
+                //    .HasColumnName("rowguid")
+                //    .HasDefaultValueSql("(newid())");
 
                 entity.HasOne(d => d.BusinessEntity)
                     .WithOne(p => p.Password)
@@ -539,9 +539,9 @@ namespace AdWorksCore.HumanResources.Data.Entities
                 entity.HasIndex(e => e.Demographics)
                     .HasName("XMLVALUE_Person_Demographics");
 
-                entity.HasIndex(e => e.Rowguid)
-                    .HasName("AK_Person_rowguid")
-                    .IsUnique();
+                //entity.HasIndex(e => e.Rowguid)
+                //    .HasName("AK_Person_rowguid")
+                //    .IsUnique();
 
                 entity.HasIndex(e => new { e.LastName, e.FirstName, e.MiddleName });
 
@@ -579,9 +579,9 @@ namespace AdWorksCore.HumanResources.Data.Entities
                     .IsRequired()
                     .HasColumnType("nchar(2)");
 
-                entity.Property(e => e.Rowguid)
-                    .HasColumnName("rowguid")
-                    .HasDefaultValueSql("(newid())");
+                //entity.Property(e => e.Rowguid)
+                //    .HasColumnName("rowguid")
+                //    .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.Suffix).HasMaxLength(10);
 
@@ -674,9 +674,9 @@ namespace AdWorksCore.HumanResources.Data.Entities
                     .HasName("AK_StateProvince_Name")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Rowguid)
-                    .HasName("AK_StateProvince_rowguid")
-                    .IsUnique();
+                //entity.HasIndex(e => e.Rowguid)
+                //    .HasName("AK_StateProvince_rowguid")
+                //    .IsUnique();
 
                 entity.HasIndex(e => new { e.StateProvinceCode, e.CountryRegionCode })
                     .HasName("AK_StateProvince_StateProvinceCode_CountryRegionCode")
@@ -701,9 +701,9 @@ namespace AdWorksCore.HumanResources.Data.Entities
                     .HasColumnType("Name")
                     .HasMaxLength(4000);
 
-                entity.Property(e => e.Rowguid)
-                    .HasColumnName("rowguid")
-                    .HasDefaultValueSql("(newid())");
+                //entity.Property(e => e.Rowguid)
+                //    .HasColumnName("rowguid")
+                //    .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.StateProvinceCode)
                     .IsRequired()

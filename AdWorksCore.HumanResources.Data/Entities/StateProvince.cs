@@ -16,7 +16,7 @@ namespace AdWorksCore.HumanResources.Data.Entities
         public bool? IsOnlyStateProvinceFlag { get; set; }
         public string Name { get; set; }
         public int TerritoryId { get; set; }
-        public Guid Rowguid { get; set; }
+        //public Guid Rowguid { get; set; }
         public DateTime ModifiedDate { get; set; }
 
         public CountryRegion CountryRegionCodeNavigation { get; set; }

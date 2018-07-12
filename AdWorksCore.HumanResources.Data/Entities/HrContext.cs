@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
+using Microsoft.Extensions.Logging.Debug;
 
 namespace AdWorksCore.HumanResources.Data.Entities
 {
@@ -33,13 +34,21 @@ namespace AdWorksCore.HumanResources.Data.Entities
             // passing options down to context
         }
 
-        public static readonly LoggerFactory LogFactory
-            = new LoggerFactory(new[]
-            {
-                new ConsoleLoggerProvider((category, level)
-                    => category == DbLoggerCategory.Database.Command.Name
-                    && level == LogLevel.Information, true)
-            });
+        /// <summary>
+        /// Moving log configuration to client and/or dependency injection system
+        /// </summary>
+        /// <param name="optionsBuilder"></param>
+        //public static readonly LoggerFactory LogFactory
+        //    = new LoggerFactory(new[]
+        //    {
+        //        //new ConsoleLoggerProvider((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Information, true)
+        //        new DebugLoggerProvider()
+        //    });
+
+        //public static readonly ILoggerFactory LogFactory2
+        //    = new LoggerFactory()
+        //        .AddConsole((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Information, true)
+        //        .AddDebug();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -47,8 +56,7 @@ namespace AdWorksCore.HumanResources.Data.Entities
             {
                 //optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014");
             }
-            optionsBuilder
-                .UseLoggerFactory(LogFactory);
+            //optionsBuilder.UseLoggerFactory(LogFactory);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

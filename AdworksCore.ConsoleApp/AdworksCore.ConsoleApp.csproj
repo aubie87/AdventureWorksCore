@@ -6,7 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AdWorksCore.HumanResources.Data\AdWorksCore.HumanResources.Data.csproj" />
+    <ProjectReference Include="..\AdWorksCore.Web\AdWorksCore.Web.csproj" />
   </ItemGroup>
 
 </Project>

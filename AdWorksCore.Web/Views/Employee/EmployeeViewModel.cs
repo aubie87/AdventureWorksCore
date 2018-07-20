@@ -9,51 +9,11 @@ namespace AdWorksCore.Web.Views.Employee
 {
     public class EmployeeViewModel
     {
-        public static EmployeeViewModel FromPerson(Person person)
-        {
-            return new EmployeeViewModel()
-            {
-                Id = person.BusinessEntityId,
-                FirstName = person.FirstName,
-                MiddleName = person.MiddleName,
-                LastName = person.LastName,
-                Title = person.Title,
-                Suffix = person.Suffix,
-                LastModified = person.ModifiedDate.ToLocalTime(),
-                PersonType = PersonType.Employee
-            };
-        }
-
-        public static IList<EmployeeViewModel> FromPerson(IList<Person> employeeList)
-        {
-            List<EmployeeViewModel> vmList = new List<EmployeeViewModel>();
-            foreach (var p in employeeList)
-            {
-                vmList.Add(EmployeeViewModel.FromPerson(p));
-            }
-            return vmList;
-        }
-
-        public Person CreatePerson()
-        {
-            return CopyToPerson(new Person());
-        }
-
-        public Person CopyToPerson(Person person)
-        {
-            person.FirstName = FirstName;
-            person.LastName = LastName;
-            person.MiddleName = MiddleName;
-            person.Suffix = Suffix;
-            person.Title = Title;
-            person.ModifiedDate = DateTime.UtcNow;
-            person.BusinessEntityId = Id;
-            person.PersonType = "EM";
-            return person;
-        }
-
+        // BusinessEntity data
         [ReadOnly(true)]
         public int Id { get; set; }
+
+        // Person data
         public string Title { get; set; }
         [Required, MinLength(3), DisplayName("First Name")]
         public string FirstName { get; set; }
@@ -62,9 +22,45 @@ namespace AdWorksCore.Web.Views.Employee
         [Required, MinLength(3), DisplayName("Last Name")]
         public string LastName { get; set; }
         public string Suffix { get; set; }
-        public PersonType PersonType { get; set; }
-        [DisplayName("Last Modified")]
+        //public PersonType PersonType { get; set; }
+        [Required, DisplayName("Name Style")]
+        public bool NameStyle { get; set; }
+        [Required, DisplayName("Email Promotion Level")]
+        public int EmailPromotion { get; set; }
+        [DisplayName("Person Last Modified")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd hh:mm tt}")]
-        public DateTime LastModified { get; set; }
+        public DateTime PersonLastModified { get; set; }
+
+        // Employee data
+        [ReadOnly(true)]
+        [Required, MinLength(8), MaxLength(16), DisplayName("National ID Number")]
+        public string NationalIdNumber { get; set; }
+        [Required, MinLength(3), MaxLength(256), DisplayName("Login ID")]
+        public string LoginId { get; set; }
+        [ReadOnly(true), DisplayName("Organization Level"), DefaultValue(0)]
+        public short? OrganizationLevel { get; set; }
+        [Required, MinLength(3), MaxLength(50), DisplayName("Job Title")]
+        public string JobTitle { get; set; }
+        [DisplayName("Birthday")]
+        [Required, DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime BirthDate { get; set; }
+        [Required, StringLength(1), DisplayName("Marital Status")]
+        public string MaritalStatus { get; set; }
+        [Required, StringLength(1)]
+        public string Gender { get; set; }
+        [DisplayName("Hired Date")]
+        [Required, ReadOnly(true), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime HireDate { get; set; }
+        [Required, DisplayName("Is Salaried"), DefaultValue(true)]
+        public bool? SalariedFlag { get; set; }
+        [Required, DisplayName("Vacation Hours")]
+        public short VacationHours { get; set; }
+        [Required, DisplayName("Sick Leave Hours")]
+        public short SickLeaveHours { get; set; }
+        [Required, DisplayName("Is Current"), DefaultValue(true)]
+        public bool? CurrentFlag { get; set; }
+        [ReadOnly(true), DisplayName("Emp Last Modified")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd hh:mm tt}")]
+        public DateTime EmployeeModifiedDate { get; set; }
     }
 }

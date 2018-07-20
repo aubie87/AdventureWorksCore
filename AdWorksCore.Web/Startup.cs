@@ -1,4 +1,6 @@
-﻿using AdWorksCore.HumanResources.Data.Entities;
+﻿using AdWorksCore.HumanResources.Data.Domain;
+using AdWorksCore.HumanResources.Data.Entities;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
@@ -27,11 +29,15 @@ namespace AdWorksCore.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddAutoMapper();
             //Mapper.AssertConfigurationIsValid();
 
             services.AddDbContext<HrContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("AdWorksConnection")));
+
+            services.AddAutoMapper();
+            Mapper.AssertConfigurationIsValid();
+
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
             services.AddMvc()
                 .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);

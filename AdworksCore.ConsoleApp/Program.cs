@@ -1,4 +1,7 @@
-﻿using AdWorksCore.HumanResources.Data.Entities;
+﻿using AdWorksCore.HumanResources.Data.Domain;
+using AdWorksCore.HumanResources.Data.Entities;
+using AdWorksCore.Web.Views.Employee;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,50 +16,95 @@ namespace AdworksCore.ConsoleApp
         public static readonly ILoggerFactory loggerFactory
             = new LoggerFactory()
                 .AddConsole((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Information, true)
-                .AddDebug((category, level) => category == "AdworksCore.ConsoleApp" && level == LogLevel.Warning);
+                .AddDebug((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Information);
+                //.AddDebug((category, level) => category == "AdworksCore.ConsoleApp" && level == LogLevel.Information);
 
 
-        // TODO: code smell - configure logging from here, not within EF
         static void Main(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<HrContext>();
             optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AdventureWorks2014;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite");
             optionsBuilder.UseLoggerFactory(loggerFactory);
 
-            var logger = loggerFactory.CreateLogger("AdworksCore.ConsoleApp");
+            var logger = loggerFactory.CreateLogger<Program>();
 
-            using (HrContext hrContext = new HrContext(optionsBuilder.Options))
+            // configure mapper for learning
+            var mapConfig = new MapperConfiguration(cfg =>
             {
-                
-                //OnboardEmployee(hrContext, hrContext.Person.Find(20778), DateTime.Parse("1995-08-06"), "M", "111120778");
+                cfg.AddProfile<EmployeeMappingProfile>();
+            });
 
+            mapConfig.AssertConfigurationIsValid();
+            var map = mapConfig.CreateMapper();
 
-                List<Person> employees = hrContext.Person
-                    .Include(p=>p.Employee)
-                    .Include(p=>p.PersonPhone)
-                    .Where(p=>p.PersonType == "EM")
-                    .ToList();
-                foreach (var person in employees)
-                {
-                    Employee employee = person.Employee;
-                    if(employee == null)
-                    {
-                        logger.LogWarning("{FirstName} {LastName} is NOT an employee - {BusinessEntityId}", person.FirstName, person.LastName, person.BusinessEntityId);
-                    }
-                    else
-                    {
-                        logger.LogInformation("{FirstName} {LastName} - {JobTitle}", person.FirstName, person.LastName, employee.JobTitle);
-                        Console.WriteLine($"{person.FirstName} {person.LastName} - {employee.JobTitle}");
-                    }
-                }
+            EmployeeViewModel vm;
+            using (HrContext ctx1 = new HrContext(optionsBuilder.Options))
+            {
+                IEmployeeRepository repo = new EmployeeRepository(ctx1, loggerFactory.CreateLogger<EmployeeRepository>());
+                Employee dbEmployee = repo.GetEmployee(20778);
+                Employee emptyEmp = new Employee();
+                map.Map(dbEmployee, emptyEmp);
+                Console.WriteLine($"dbEmployee JobTitle={dbEmployee.JobTitle} emptyEmp JobTitle={emptyEmp.JobTitle}");
 
-                
+                vm = MapToViewModel(dbEmployee, map, 20778);
+
+                //PrintListOfEmployees(hrContext, logger);
                 //Person person = CreatePerson(hrContext, "Jorge", "Jastanza", "EM");
                 //OnboardEmployee(hrContext, person, DateTime.Parse("1996-08-06"), "M", "555443336");
+
+            }
+
+            using (HrContext ctx2 = new HrContext(optionsBuilder.Options))
+            {
+                IEmployeeRepository repo = new EmployeeRepository(ctx2, loggerFactory.CreateLogger<EmployeeRepository>());
+                vm.LastName += "z";
+                SaveChangesToViewModel(repo, map, vm);
             }
 
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
+        }
+
+        private static void SaveChangesToViewModel(IEmployeeRepository repo, IMapper map, EmployeeViewModel vm)
+        {
+            Employee disconnectedEmployee = map.Map<EmployeeViewModel, Employee>(vm);
+            Console.WriteLine($" Employee: {disconnectedEmployee.BusinessEntity.FirstName} {disconnectedEmployee.BusinessEntity.LastName}: {disconnectedEmployee.ModifiedDate}");
+
+            var entityEmployee = repo.Update(disconnectedEmployee);
+            repo.SaveChanges();
+            Console.WriteLine($" Updated");
+        }
+
+        private static EmployeeViewModel MapToViewModel(Employee employee, IMapper map, int id)
+        {
+            var vm = map.Map<Employee, EmployeeViewModel>(employee);
+
+            Console.WriteLine($" Employee: {employee.BusinessEntity.FirstName} {employee.BusinessEntity.MiddleName} {employee.BusinessEntity.LastName}");
+            Console.WriteLine($"ViewModel: {vm.FirstName} {vm.LastName}: {vm.EmployeeModifiedDate}");
+
+            return vm;
+        }
+
+        private static void PrintListOfEmployees(HrContext hrContext, ILogger logger)
+        {
+            List<Person> employees = hrContext.Person
+                .Include(p => p.Employee)
+                .Include(p => p.PersonPhone)
+                .Where(p => p.PersonType == "EM")
+                .ToList();
+            foreach (var person in employees)
+            {
+                Employee employee = person.Employee;
+                if (employee == null)
+                {
+                    logger.LogWarning("{FirstName} {LastName} is NOT an employee - {BusinessEntityId}", person.FirstName, person.LastName, person.BusinessEntityId);
+                }
+                else
+                {
+                    logger.LogInformation("{FirstName} {LastName} - {JobTitle}", person.FirstName, person.LastName, employee.JobTitle);
+                    Console.WriteLine($"{person.FirstName} {person.LastName} - {employee.JobTitle}");
+                }
+            }
         }
 
         private static Person CreatePerson(HrContext context, string firstName, string lastName, string personType)
@@ -99,7 +147,7 @@ namespace AdworksCore.ConsoleApp
                 BusinessEntityId = person.BusinessEntityId,
                 BirthDate = birthDate,
                 Gender = sex,
-                NationalIdnumber = ssn,
+                NationalIdNumber = ssn,
                 LoginId = string.Format($"adventure-works\\{person.FirstName.ToLower()}.{person.LastName.ToLower()}"),
                 JobTitle = "Software Intern",
                 MaritalStatus = "S",

@@ -8,6 +8,10 @@
     <div class="col-md-4 col-md-offset-2">
         <div class="well">
             <div class="form-group">
+                <label asp-for="LoginId" class="control-label"></label>
+                <input asp-for="LoginId" class="form-control" readonly />
+            </div>
+            <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" readonly />
             </div>
@@ -28,8 +32,44 @@
                 <input asp-for="Suffix" class="form-control" readonly />
             </div>
             <div class="form-group">
-                <label asp-for="LastModified" class="control-label"></label>
-                <input asp-for="LastModified" class="form-control" readonly />
+                <label asp-for="JobTitle" class="control-label"></label>
+                <input asp-for="JobTitle" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="BirthDate" class="control-label"></label>
+                <input asp-for="BirthDate" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="HireDate" class="control-label"></label>
+                <input asp-for="HireDate" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+                <input asp-for="Gender" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="MaritalStatus" class="control-label"></label>
+                <input asp-for="MaritalStatus" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="NationalIdNumber" class="control-label"></label>
+                <input asp-for="NationalIdNumber" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="OrganizationLevel" class="control-label"></label>
+                <input asp-for="OrganizationLevel" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="SalariedFlag" class="control-label"></label>
+                <input asp-for="SalariedFlag" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="CurrentFlag" class="control-label"></label>
+                <input asp-for="CurrentFlag" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeModifiedDate" class="control-label"></label>
+                <input asp-for="EmployeeModifiedDate" class="form-control" readonly />
             </div>
             <div class="form-group">
                 <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>

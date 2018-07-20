@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Logging;
@@ -32,6 +36,45 @@ namespace AdWorksCore.HumanResources.Data.Entities
         public HrContext(DbContextOptions<HrContext> options) : base(options)
         {
             // passing options down to context
+        }
+
+        public override int SaveChanges()
+        {
+            BeforeSavingChanges();
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            BeforeSavingChanges();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        /// <summary>
+        /// For any Entity that needs to update the DB, update the ModifiedDate to UtcNow.
+        /// </summary>
+        private void BeforeSavingChanges()
+        {
+            // all changes committed during this save will have the same timestamp
+            DateTime dt = DateTime.UtcNow;
+            foreach (var entry in ChangeTracker.Entries())
+            {
+                PropertyInfo info = entry.Entity.GetType().GetProperty("ModifiedDate");
+                if (info != null)
+                {
+                    info.SetValue(entry.Entity, dt);
+                }
+
+                if (entry.Entity is Person)
+                {
+                    // All persons in the employee/hr context are employees so make sure
+                    // EM is set. This could be a problem if we ever want to move someone
+                    // out as an employee - better they get CurrentFlag set to 0 and
+                    // create a new person with a new role.
+                    info = entry.Entity.GetType().GetProperty("PersonType");
+                    info.SetValue(entry.Entity, "EM");
+                }
+            }
         }
 
         /// <summary>
@@ -352,7 +395,7 @@ namespace AdWorksCore.HumanResources.Data.Entities
                     .HasName("AK_Employee_LoginID")
                     .IsUnique();
 
-                entity.HasIndex(e => e.NationalIdnumber)
+                entity.HasIndex(e => e.NationalIdNumber)
                     .HasName("AK_Employee_NationalIDNumber")
                     .IsUnique();
 
@@ -374,7 +417,8 @@ namespace AdWorksCore.HumanResources.Data.Entities
                     .IsRequired()
                     .HasColumnType("nchar(1)");
 
-                entity.Property(e => e.HireDate).HasColumnType("date");
+                entity.Property(e => e.HireDate)
+                    .HasColumnType("date");
 
                 entity.Property(e => e.JobTitle)
                     .IsRequired()
@@ -393,7 +437,7 @@ namespace AdWorksCore.HumanResources.Data.Entities
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.NationalIdnumber)
+                entity.Property(e => e.NationalIdNumber)
                     .IsRequired()
                     .HasColumnName("NationalIDNumber")
                     .HasMaxLength(15);
@@ -541,11 +585,11 @@ namespace AdWorksCore.HumanResources.Data.Entities
 
                 entity.ToTable("Person", "Person");
 
-                entity.HasIndex(e => e.AdditionalContactInfo)
-                    .HasName("PXML_Person_AddContact");
+                //entity.HasIndex(e => e.AdditionalContactInfo)
+                //    .HasName("PXML_Person_AddContact");
 
-                entity.HasIndex(e => e.Demographics)
-                    .HasName("XMLVALUE_Person_Demographics");
+                //entity.HasIndex(e => e.Demographics)
+                //    .HasName("XMLVALUE_Person_Demographics");
 
                 //entity.HasIndex(e => e.Rowguid)
                 //    .HasName("AK_Person_rowguid")
@@ -557,9 +601,9 @@ namespace AdWorksCore.HumanResources.Data.Entities
                     .HasColumnName("BusinessEntityID")
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.AdditionalContactInfo).HasColumnType("xml");
+                //entity.Property(e => e.AdditionalContactInfo).HasColumnType("xml");
 
-                entity.Property(e => e.Demographics).HasColumnType("xml");
+                //entity.Property(e => e.Demographics).HasColumnType("xml");
 
                 entity.Property(e => e.EmailPromotion).HasDefaultValueSql("((0))");
 

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AdWorksCore.HumanResources.Data.Domain;
 using AdWorksCore.HumanResources.Data.Entities;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -10,13 +12,15 @@ namespace AdWorksCore.Web.Views.Employee
 {
     public class EmployeeController : Controller
     {
+        private readonly IEmployeeRepository repository;
+        private readonly IMapper mapper;
         private readonly ILogger<EmployeeController> logger;
-        private readonly HrContext context;
 
-        public EmployeeController(ILogger<EmployeeController> logger, HrContext context)
+        public EmployeeController(IEmployeeRepository repository, IMapper mapper, ILogger<EmployeeController> logger)
         {
+            this.repository = repository;
+            this.mapper = mapper;
             this.logger = logger;
-            this.context = context;
         }
 
         // GET: Employee
@@ -24,24 +28,22 @@ namespace AdWorksCore.Web.Views.Employee
         public IActionResult Index()
         {
             logger.LogDebug("Employee:Index()");
-            var employees = context.Person
-                .Where(p => p.PersonType == "EM" && p.ModifiedDate > DateTime.Now.AddYears(-8))
-                .OrderBy(p=>p.LastName).ThenBy(p=>p.FirstName);
-            IList<EmployeeViewModel> vmList = EmployeeViewModel.FromPerson(employees.ToList());
-            return View(vmList);
+            var employees = repository.GetEmployees().ToList();
+            return View(mapper.Map<IEnumerable<HumanResources.Data.Entities.Employee>, IEnumerable<EmployeeViewModel>>(employees));
         }
 
         // GET: Employee/Details/5
         [HttpGet]
         public IActionResult Detail(int id)
         {
-            Person detail = context.Person.Find(id);
+            var detail = repository.GetEmployee(id);
             if(detail == null)
             {
                 // could return NotFound() but not useful to user
                 return RedirectToAction(nameof(Index));
             }
-            EmployeeViewModel vm = EmployeeViewModel.FromPerson(detail);
+            
+            EmployeeViewModel vm = mapper.Map<HumanResources.Data.Entities.Employee, EmployeeViewModel>(detail);
             return View(vm);
         }
 
@@ -61,21 +63,12 @@ namespace AdWorksCore.Web.Views.Employee
             {
                 try
                 {
-                    // must create and save changes to get a new BusinessEntityId from the DB
-                    BusinessEntity be = new BusinessEntity
-                    {
-                        ModifiedDate = DateTime.UtcNow
-                    };
-                    context.BusinessEntity.Add(be);
-                    context.SaveChanges();
-
-                    vm.Id = be.BusinessEntityId;
-                    Person person = vm.CreatePerson();
-                    context.Person.Add(person);
-                    context.SaveChanges();
+                    var employee = mapper.Map<EmployeeViewModel, HumanResources.Data.Entities.Employee>(vm);
+                    repository.Add(employee);
+                    repository.SaveChanges();
 
                     //return RedirectToAction(nameof(Index));
-                    return RedirectToAction(nameof(Detail), new { id = person.BusinessEntityId });
+                    return RedirectToAction(nameof(Detail), new { id = employee.BusinessEntityId });
                 }
                 catch(Exception e)
                 {
@@ -89,29 +82,36 @@ namespace AdWorksCore.Web.Views.Employee
         // GET: Employee/Edit/5
         public ActionResult Edit(int id)
         {
-            //Person person = employeeList.FirstOrDefault(e => e.Id == id);
-            var person = context.Person.Find(id);
-            EmployeeViewModel vm = EmployeeViewModel.FromPerson(person);
+            var employee = repository.GetEmployee(id);
+            if (employee == null)
+            {
+                // could return NotFound() but not useful to user
+                return RedirectToAction(nameof(Index));
+            }
+
+            EmployeeViewModel vm = mapper.Map<HumanResources.Data.Entities.Employee, EmployeeViewModel>(employee);
             return View(vm);
+
         }
 
         // POST: Employee/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, EmployeeViewModel employee)
+        public ActionResult Edit(int id, EmployeeViewModel vm)
         {
             try
             {
-                if(ModelState.IsValid && employee.Id == id)
+                if(ModelState.IsValid && vm.Id == id)
                 {
-                    Person storedEmp = context.Person.Find(id);
-                    employee.CopyToPerson(storedEmp);
-                    context.SaveChanges();
+                    var employee = mapper.Map<EmployeeViewModel, HumanResources.Data.Entities.Employee>(vm);
+                    repository.Update(employee);
+                    repository.SaveChanges();
                     return RedirectToAction(nameof(Detail), new { id });
                 }
             }
-            catch
+            catch(Exception e)
             {
+                logger.LogError(e, "Error updating Employee");
             }
             return View();
         }

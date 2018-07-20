@@ -21,8 +21,8 @@ namespace AdWorksCore.HumanResources.Data.Entities
         public string LastName { get; set; }
         public string Suffix { get; set; }
         public int EmailPromotion { get; set; }
-        public string AdditionalContactInfo { get; set; }
-        public string Demographics { get; set; }
+        //public string AdditionalContactInfo { get; set; }
+        //public string Demographics { get; set; }
         //public Guid Rowguid { get; set; }
         public DateTime ModifiedDate { get; set; }
 

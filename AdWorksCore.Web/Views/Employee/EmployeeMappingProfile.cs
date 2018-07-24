@@ -23,7 +23,7 @@ namespace AdWorksCore.Web.Views.Employee
                 .ForMember(vm => vm.LastName, emp => emp.MapFrom(e => e.BusinessEntity.LastName))
                 .ForMember(vm => vm.Suffix, emp => emp.MapFrom(e => e.BusinessEntity.Suffix))
                 .ForMember(vm => vm.EmailPromotion, emp => emp.MapFrom(e => e.BusinessEntity.EmailPromotion))
-                .ForMember(vm => vm.PersonLastModified, emp => emp.MapFrom(e => e.BusinessEntity.ModifiedDate))
+                .ForMember(vm => vm.PersonModifiedDate, emp => emp.MapFrom(e => e.BusinessEntity.ModifiedDate))
                 .ReverseMap();
                 //.ForMember(emp => emp.BusinessEntity.PersonType, opt => opt.UseValue<string>("EM"));
 

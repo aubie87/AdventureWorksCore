@@ -29,7 +29,7 @@ namespace AdWorksCore.Web.Views.Employee
         public int EmailPromotion { get; set; }
         [DisplayName("Person Last Modified")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd hh:mm tt}")]
-        public DateTime PersonLastModified { get; set; }
+        public DateTime PersonModifiedDate { get; set; }
 
         // Employee data
         [ReadOnly(true)]
@@ -49,7 +49,7 @@ namespace AdWorksCore.Web.Views.Employee
         [Required, StringLength(1)]
         public string Gender { get; set; }
         [DisplayName("Hired Date")]
-        [Required, ReadOnly(true), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [Required, DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime HireDate { get; set; }
         [Required, DisplayName("Is Salaried"), DefaultValue(true)]
         public bool? SalariedFlag { get; set; }

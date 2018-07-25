@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace AdWorksCore.Web.Test.Views.Employee
 {
@@ -14,9 +15,11 @@ namespace AdWorksCore.Web.Test.Views.Employee
         // testing various instances of mapped objects thru automapper
         private readonly IMapper sut;
         private readonly int businessEntityId = 17;
+        private readonly ITestOutputHelper output;
 
-        public EmployeeMappingProfileShould()
+        public EmployeeMappingProfileShould(ITestOutputHelper output)
         {
+            this.output = output;
             var mapConfig = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<EmployeeMappingProfile>();
@@ -25,6 +28,7 @@ namespace AdWorksCore.Web.Test.Views.Employee
             // Act
             mapConfig.AssertConfigurationIsValid();
             sut = mapConfig.CreateMapper();
+            output.WriteLine("Created mapping and correctly asserted the configuration.");
         }
 
         private HumanResources.Data.Entities.Employee GetEmployee()

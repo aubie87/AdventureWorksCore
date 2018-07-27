@@ -1,5 +1,6 @@
 ﻿using AdWorksCore.HumanResources.Data.Domain;
 using AdWorksCore.HumanResources.Data.Entities;
+using AdWorksCore.Web.Test.Common;
 using AdWorksCore.Web.Views.Employee;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -16,30 +17,26 @@ using Xunit.Abstractions;
 
 namespace AdWorksCore.Web.Test.Views.Employee
 {
-    public class EmployeeControllerShould
+    public class EmployeeControllerShould : IClassFixture<EmployeeMappingFixture>
     {
+        private readonly EmployeeMappingFixture map;
         private readonly ITestOutputHelper output;
-        private readonly IMapper mapper;
 
-        public EmployeeControllerShould(ITestOutputHelper output)
+        public EmployeeControllerShould(EmployeeMappingFixture employeeMappingFixture, ITestOutputHelper output)
         {
+            this.map = employeeMappingFixture;
             this.output = output;
-            var mapConfig = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<EmployeeMappingProfile>();
-            });
-            mapConfig.AssertConfigurationIsValid();
-            mapper = mapConfig.CreateMapper();
         }
 
         [Fact]
+        //[Fact(Skip = "Some reason being skipped.")]
         public void ReturnEmployeeViewModelListForIndex()
         {
             // Arrange
             var mockRepo = new Mock<IEmployeeRepository>();
             mockRepo.Setup(repo => repo.GetEmployees()).Returns(GetTestEmployees());
             var nullLogger = new NullLogger<EmployeeController>();
-            var controller = new EmployeeController(mockRepo.Object, mapper, nullLogger);
+            var controller = new EmployeeController(mockRepo.Object, map.Mapper, nullLogger);
 
             // Act
             var result = controller.Index();

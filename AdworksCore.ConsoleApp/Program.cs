@@ -40,6 +40,7 @@ namespace AdworksCore.ConsoleApp
             EmployeeViewModel vm;
             using (HrContext ctx1 = new HrContext(optionsBuilder.Options))
             {
+                // IoC container usually handles this.
                 IEmployeeRepository repo = new EmployeeRepository(ctx1, loggerFactory.CreateLogger<EmployeeRepository>());
                 Employee dbEmployee = repo.GetEmployee(20778);
                 Employee emptyEmp = new Employee();
@@ -48,10 +49,9 @@ namespace AdworksCore.ConsoleApp
 
                 vm = MapToViewModel(dbEmployee, map, 20778);
 
-                //PrintListOfEmployees(hrContext, logger);
+                PrintListOfEmployees(repo, logger);
                 //Person person = CreatePerson(hrContext, "Jorge", "Jastanza", "EM");
                 //OnboardEmployee(hrContext, person, DateTime.Parse("1996-08-06"), "M", "555443336");
-
             }
 
             using (HrContext ctx2 = new HrContext(optionsBuilder.Options))
@@ -67,44 +67,38 @@ namespace AdworksCore.ConsoleApp
 
         private static void SaveChangesToViewModel(IEmployeeRepository repo, IMapper map, EmployeeViewModel vm)
         {
+            Console.WriteLine("   *** SaveChangesToViewModel ***");
             Employee disconnectedEmployee = map.Map<EmployeeViewModel, Employee>(vm);
             Console.WriteLine($" Employee: {disconnectedEmployee.BusinessEntity.FirstName} {disconnectedEmployee.BusinessEntity.LastName}: {disconnectedEmployee.ModifiedDate}");
 
             var entityEmployee = repo.Update(disconnectedEmployee);
             repo.SaveChanges();
-            Console.WriteLine($" Updated");
+            Console.WriteLine(" Updated");
+            Console.WriteLine();
         }
 
         private static EmployeeViewModel MapToViewModel(Employee employee, IMapper map, int id)
         {
             var vm = map.Map<Employee, EmployeeViewModel>(employee);
 
+            Console.WriteLine("   *** MapToViewModel ***");
             Console.WriteLine($" Employee: {employee.BusinessEntity.FirstName} {employee.BusinessEntity.MiddleName} {employee.BusinessEntity.LastName}");
             Console.WriteLine($"ViewModel: {vm.FirstName} {vm.LastName}: {vm.EmployeeModifiedDate}");
+            Console.WriteLine();
 
             return vm;
         }
 
-        private static void PrintListOfEmployees(HrContext hrContext, ILogger logger)
+        private static void PrintListOfEmployees(IEmployeeRepository repo, ILogger logger)
         {
-            List<Person> employees = hrContext.Person
-                .Include(p => p.Employee)
-                .Include(p => p.PersonPhone)
-                .Where(p => p.PersonType == "EM")
-                .ToList();
+            Console.WriteLine("   *** PrintListOfEmployees ***");
+            var employees = repo.GetEmployeesSummary();
             foreach (var person in employees)
             {
-                Employee employee = person.Employee;
-                if (employee == null)
-                {
-                    logger.LogWarning("{FirstName} {LastName} is NOT an employee - {BusinessEntityId}", person.FirstName, person.LastName, person.BusinessEntityId);
-                }
-                else
-                {
-                    logger.LogInformation("{FirstName} {LastName} - {JobTitle}", person.FirstName, person.LastName, employee.JobTitle);
-                    Console.WriteLine($"{person.FirstName} {person.LastName} - {employee.JobTitle}");
-                }
+                logger.LogInformation("{FirstName} {LastName} - {JobTitle}", person.FirstName, person.LastName, person.JobTitle);
+                Console.WriteLine($"{person.FirstName} {person.LastName} - {person.JobTitle}");
             }
+            Console.WriteLine();
         }
 
         private static Person CreatePerson(HrContext context, string firstName, string lastName, string personType)

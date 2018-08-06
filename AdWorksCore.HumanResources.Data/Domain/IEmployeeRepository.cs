@@ -8,6 +8,7 @@ namespace AdWorksCore.HumanResources.Data.Domain
     {
         Employee GetEmployee(int id);
         IQueryable<Employee> GetEmployees();
+        IQueryable<EmployeeSummary> GetEmployeesSummary();
         void Add(Employee employee);
         bool SaveChanges();
         EntityEntry<Employee> Update(Employee employee);

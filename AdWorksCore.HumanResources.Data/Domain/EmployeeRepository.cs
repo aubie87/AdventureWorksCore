@@ -42,6 +42,24 @@ namespace AdWorksCore.HumanResources.Data.Domain
                 .ThenBy(e => e.BusinessEntity.FirstName);
         }
 
+        public IQueryable<EmployeeSummary> GetEmployeesSummary()
+        {
+            return context.Employee
+                // .AsNoTracking()
+                .Include(p => p.BusinessEntity)
+                // .Where(e => e.BusinessEntity.PersonType == "EM" && e.ModifiedDate > DateTime.Now.AddYears(-8))
+                // .Where(e=>e.CurrentFlag.HasValue == true)  // used for employees no longer with the company?
+                .Where(e => e.ModifiedDate > DateTime.Now.AddYears(-4))
+                .OrderBy(e => e.BusinessEntity.LastName)
+                .ThenBy(e => e.BusinessEntity.FirstName)
+                .Select(e => new EmployeeSummary
+                    {
+                    FirstName = e.BusinessEntity.FirstName,
+                    LastName = e.BusinessEntity.LastName,
+                    JobTitle = e.JobTitle
+                });
+        }
+
         public Employee GetEmployee(int id)
         {
             return context.Employee

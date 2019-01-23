@@ -43,13 +43,16 @@ namespace AdWorksCore.Web.Views.Employee
         public string JobTitle { get; set; }
         [DisplayName("Birthday")]
         [Required, DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
         [Required, StringLength(1), DisplayName("Marital Status")]
         public string MaritalStatus { get; set; }
         [Required, StringLength(1)]
         public string Gender { get; set; }
+
         [DisplayName("Hired Date")]
         [Required, DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [DataType(DataType.Date)]
         public DateTime HireDate { get; set; }
         [Required, DisplayName("Is Salaried"), DefaultValue(true)]
         public bool? SalariedFlag { get; set; }
@@ -60,7 +63,8 @@ namespace AdWorksCore.Web.Views.Employee
         [Required, DisplayName("Is Current"), DefaultValue(true)]
         public bool? CurrentFlag { get; set; }
         [ReadOnly(true), DisplayName("Emp Last Modified")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd hh:mm tt}")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd hh:mm:ss tt}")]
+        [DataType(DataType.DateTime)]
         public DateTime EmployeeModifiedDate { get; set; }
     }
 }

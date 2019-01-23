@@ -47,6 +47,60 @@ namespace AdWorksCore.Web.Test.Views.Employee
             Assert.Equal(2, model.Count());
         }
 
+        [Fact]
+        public void ReturnValidEmployeeViewModelForDetail()
+        {
+            // Arrange
+            const int employeeId = 1;
+            var mockRepo = new Mock<IEmployeeRepository>();
+            mockRepo.Setup(repo => repo.GetEmployee(employeeId))
+                .Returns(GetTestEmployees().First(e => e.BusinessEntityId == employeeId));
+            var nullLogger = new NullLogger<EmployeeController>();
+            var controller = new EmployeeController(mockRepo.Object, map.Mapper, nullLogger);
+
+            // Act
+            var result = controller.Detail(employeeId);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<EmployeeViewModel>(viewResult.ViewData.Model);
+            Assert.Equal(employeeId, model.Id);
+        }
+
+        [Fact]
+        public void ReturnInvalidEmployeeViewModelForDetail()
+        {
+            // Arrange
+            const int employeeId = 99;
+            var mockRepo = new Mock<IEmployeeRepository>();
+            mockRepo.Setup(repo => repo.GetEmployee(employeeId)).Returns(GetTestEmployees().FirstOrDefault(e => e.BusinessEntityId == employeeId));
+            var nullLogger = new NullLogger<EmployeeController>();
+            var controller = new EmployeeController(mockRepo.Object, map.Mapper, nullLogger);
+
+            // Act
+            var result = controller.Detail(employeeId);
+
+            // Assert
+            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirectToActionResult.ActionName);
+            mockRepo.Verify();
+        }
+
+        [Fact]
+        public void ReturnEmployeeCreateView()
+        {
+            // Arrange
+            var mockRepo = new Mock<IEmployeeRepository>();
+            var nullLogger = new NullLogger<EmployeeController>();
+            var controller = new EmployeeController(mockRepo.Object, map.Mapper, nullLogger);
+
+            // Act
+            var result = controller.Create();
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+        }
+
         private IQueryable<HumanResources.Data.Entities.Employee> GetTestEmployees()
         {
             IList<HumanResources.Data.Entities.Employee> employees = new List<HumanResources.Data.Entities.Employee>()
